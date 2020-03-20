@@ -10,7 +10,7 @@ def __trace_or_list(trace_or_list):
 
 
 def __add_trace_to_fig(fig, row, col, trace, secondary_y):
-    fig.add_trace(trace, row=row, col=col)
+    fig.add_trace(trace, row=row, col=col, secondary_y=secondary_y)
     fig.update_yaxes(
         title_text=trace.name,
         row=row,
