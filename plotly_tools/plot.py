@@ -67,18 +67,19 @@ def plot_scatter(
 
     min_xy = min(min_xy, 0.0)
     points = [min_xy, max_xy]
-    trace_id = build_trace(
-        points,
-        points,
-        "Identity",
-        extra_args={
-            "line": {
-                "color": "black",
-                "dash": "dash"
-            }
-        })
+    if identity:
+        trace_id = build_trace(
+            points,
+            points,
+            "Identity",
+            extra_args={
+                "line": {
+                    "color": "black",
+                    "dash": "dash"
+                }
+            })
 
-    fig.add_trace(trace_id)
+        fig.add_trace(trace_id)
     fig.update_xaxes(title=x_name)
     fig.update_yaxes(title=y_name)
 
