@@ -129,3 +129,43 @@ def plot_traces(trace_list, title=None, extra_args={}, height_factor=200):
     )
 
     return fig
+
+
+def bland_altman(data, col1, col2, name=None, text=None, title=None):
+    mean = data[[col1, col2]].mean(axis=1)
+    diff = data[col1] - data[col2]
+    mean_diff = diff.mean()
+    std_diff = diff.std()
+
+    trace_ba = build_trace(
+        mean,
+        diff,
+        name,
+        mode="markers",
+        text=text
+    )
+
+    max_val = mean_diff + 1.96 * std_diff
+    points_x = [mean.min(), mean.max()]
+    max_points_y = [max_val, max_val]
+    min_val = mean_diff - 1.96*std_diff
+    min_points_y = [min_val, min_val]
+    trace_max = build_trace(
+        points_x,
+        max_points_y,
+        f"+SD1.96: {max_val:.3f}",
+        extra_args={"line": {"color": "black", "dash": "dash"}}
+    )
+
+    trace_min = build_trace(
+        points_x,
+        min_points_y,
+        f"-SD1.96: {min_val:.3f}",
+        extra_args={"line": {"color": "black", "dash": "dash"}}
+    )
+
+    return plot_scatter([
+        trace_ba,
+        trace_max,
+        trace_min
+    ], x_name="Mean", y_name="Diff", title=title)
