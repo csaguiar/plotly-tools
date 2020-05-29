@@ -99,6 +99,9 @@ def plot_scatter(
 def plot_traces(trace_list, title=None, extra_args={}, height_factor=200):
     total_num_plots = len(trace_list)
 
+    if total_num_plots == 0:
+        return go.Figure()
+
     fig = make_subplots(
         rows=total_num_plots,
         cols=1,
@@ -119,14 +122,15 @@ def plot_traces(trace_list, title=None, extra_args={}, height_factor=200):
                 fig = __add_trace_to_fig(fig, i+1, 1, trace, True)
 
     fig.update_xaxes(title="time", row=total_num_plots, col=1)
-    fig.update_layout(
-        height=height_factor*(total_num_plots),
-        title=go.layout.Title(
-            text=title,
-            xref="paper",
-            x=0
+    if total_num_plots > 1:
+        fig.update_layout(
+            height=height_factor*(total_num_plots),
+            title=go.layout.Title(
+                text=title,
+                xref="paper",
+                x=0
+            )
         )
-    )
 
     return fig
 
